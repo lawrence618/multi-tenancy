@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,9 @@ class TaskController extends Controller
     public function index()
     {
         try {
-            // TODO: Add logic to handle errors
+            $tasks = Task::with('project')->get();
+
+            return view('tasks.index', compact('tasks'));
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -33,7 +36,9 @@ class TaskController extends Controller
     public function create()
     {
         try {
-            // TODO: Add logic to handle errors
+            $projects = Project::all();
+
+            return view('tasks.create', compact('projects'));
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -50,7 +55,9 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         try {
-            // TODO: Add logic to handle errors
+            Task::create($request->validated());
+
+            return redirect()->route('tasks.index');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -84,7 +91,9 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         try {
-            // TODO: Add logic to handle errors
+            $projects = Project::all();
+
+            return view('tasks.edit', compact('task', 'projects'));
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -101,7 +110,9 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         try {
-            // TODO: Add logic to handle errors
+            $task->update($request->validated());
+
+            return redirect()->route('tasks.index');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -118,7 +129,9 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         try {
-            // TODO: Add logic to handle errors
+            $task->delete();
+
+            return redirect()->route('tasks.index');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());

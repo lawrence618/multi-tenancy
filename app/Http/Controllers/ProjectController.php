@@ -16,7 +16,9 @@ class ProjectController extends Controller
     public function index()
     {
         try {
-            // TODO: Add logic to handle errors
+            $projects = Project::all();
+
+            return view('projects.index', compact('projects'));
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -33,7 +35,7 @@ class ProjectController extends Controller
     public function create()
     {
         try {
-            // TODO: Add logic to handle errors
+            return view('projects.create');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -50,7 +52,9 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         try {
-            // TODO: Add logic to handle errors
+            Project::create($request->validated());
+
+            return redirect()->route('projects.index');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -84,7 +88,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         try {
-            // TODO: Add logic to handle errors
+            return view('projects.edit', compact('project'));
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -101,7 +105,9 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         try {
-            // TODO: Add logic to handle errors
+            $project->update($request->validated());
+
+            return redirect()->route('projects.index');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
@@ -118,7 +124,9 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         try {
-            // TODO: Add logic to handle errors
+            $project->delete();
+
+            return redirect()->route('projects.index');
 
         } catch (QueryException $e) {
             Log::error('Database error: '.$e->getMessage());
