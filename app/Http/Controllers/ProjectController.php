@@ -16,7 +16,8 @@ class ProjectController extends Controller
     public function index()
     {
         try {
-            $projects = Project::all();
+            // $projects = Project::all();
+            $projects = Project::where('user_id', auth()->id())->get(); 
 
             return view('projects.index', compact('projects'));
 
@@ -52,7 +53,9 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         try {
-            Project::create($request->validated());
+            Project::create($request->validated()
+                + ['user_id' => auth()->id()] 
+            );
 
             return redirect()->route('projects.index');
 
@@ -88,6 +91,10 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         try {
+            if ($project->user_id !== auth()->id()) { 
+                abort(403);
+            }
+
             return view('projects.edit', compact('project'));
 
         } catch (QueryException $e) {

@@ -34,8 +34,8 @@
                                             class="inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <x-primary-button class="bg-red-600"
-                                                onclick="return confirm('Are you sure?')">Delete</x-primary-button>
+                                            <x-danger-button class="bg-red-600"
+                                                onclick="return confirm('Are you sure?')">Delete</x-danger-button>
                                         </form>
                                     </td>
                                 </tr>
