@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
+
+class {{ class }} extends Controller
+{
+    /**
+     * Handle the incoming request.
+     */
+    public function __invoke(Request $request)
+    {
+        try {
+            // TODO: Add logic to handle errors
+
+        } catch (QueryException $e) {
+            Log::error('Database error: '.$e->getMessage());
+            return view('error')->with('message', 'Database error occurred.');
+        } catch (\Exception $e) {
+            Log::error('Error: '.$e->getMessage());
+            return view('error')->with('message', 'An unexpected error occurred.');
+        }
+    }
+}
